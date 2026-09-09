@@ -42,7 +42,7 @@ NEWS_API_KEY=your_newsapi_key_here  # Optional - falls back to demo content if n
 
 **Getting API Keys:**
 
-- **Gemini API Key**: Get a free key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+- **Gemini API Key**: Get a free key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 - **NewsAPI Key** (optional): Get a free key from [NewsAPI.org](https://newsapi.org/) - without this, the app uses fallback demo content
 
 ### 3. Run Locally
