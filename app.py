@@ -6,7 +6,6 @@ from datetime import datetime
 from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 import requests
-import google.generativeai as genai
 import edge_tts
 from dotenv import load_dotenv
 
@@ -16,13 +15,12 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Configure Gemini API
+# Configure Gemini API (using REST)
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
-else:
+if not GEMINI_API_KEY:
     print("Warning: GEMINI_API_KEY not set. Content generation will fail.")
 
 # In-memory session storage (for demo purposes)
@@ -90,7 +88,7 @@ async def generate_audio(text, filepath, voice="fr-FR-DeniseNeural"):
 
 
 def generate_content_with_gemini(raw_article, level):
-    """Use Gemini to generate adapted text, questions, vocab, and dictation sentences."""
+    """Use Gemini to generate adapted text, questions, vocab, and dictation sentences via REST API."""
     prompt = f"""You are a French language teacher. Given the following raw news article (title and content), produce a JSON object with these keys:
 - "adapted_text": the article rewritten for a {level} learner (approx. 250-400 words). Use simpler vocabulary and shorter sentences for lower levels, but keep the core meaning.
 - "questions": an array of two objects, each with "question" (string), "options" (array of 4 strings), and "correct" (integer 0-3 indicating the correct option index).
@@ -104,11 +102,33 @@ Content: {raw_article['content']}
 Return ONLY valid JSON. No extra text, no markdown formatting."""
 
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        response = model.generate_content(prompt)
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": GEMINI_API_KEY
+        }
         
-        # Extract JSON from response
-        response_text = response.text.strip()
+        payload = {
+            "contents": [{
+                "parts": [{
+                    "text": prompt
+                }]
+            }],
+            "generationConfig": {
+                "temperature": 0.7,
+                "maxOutputTokens": 2048
+            }
+        }
+        
+        response = requests.post(
+            GEMINI_API_URL,
+            headers=headers,
+            json=payload,
+            timeout=30
+        )
+        response.raise_for_status()
+        
+        result = response.json()
+        response_text = result["candidates"][0]["content"]["parts"][0]["text"].strip()
         
         # Remove markdown code blocks if present
         if response_text.startswith("```json"):
@@ -117,8 +137,8 @@ Return ONLY valid JSON. No extra text, no markdown formatting."""
             response_text = response_text[:-3]
         response_text = response_text.strip()
         
-        result = json.loads(response_text)
-        return result
+        generated_content = json.loads(response_text)
+        return generated_content
     except Exception as e:
         print(f"Gemini API error: {e}")
         # Return minimal fallback structure
@@ -395,4 +415,5 @@ def cleanup_old_sessions():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Disable reloader to prevent issues with background processes
+    app.run(debug=True, port=5000, host='0.0.0.0', use_reloader=False)
