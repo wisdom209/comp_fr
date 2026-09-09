@@ -1,0 +1,161 @@
+/* Custom styles for French News Listening Practice App */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.step-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-title {
+    color: #2c3e50;
+}
+
+.transcript-box {
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.transcript-word {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.transcript-word:hover {
+    background-color: #e9ecef;
+}
+
+.transcript-word.active {
+    background-color: #ffc107;
+    color: #000;
+    font-weight: bold;
+}
+
+.transcript-word.played {
+    background-color: #d4edda;
+}
+
+.audio-container audio {
+    max-width: 100%;
+}
+
+#mcq1-options .list-group-item,
+#mcq2-options .list-group-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+#mcq1-options .list-group-item:hover,
+#mcq2-options .list-group-item:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+#mcq1-options .list-group-item.selected,
+#mcq2-options .list-group-item.selected {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+}
+
+#mcq1-options .list-group-item.correct,
+#mcq2-options .list-group-item.correct {
+    border-color: #198754;
+    background-color: #d1e7dd;
+}
+
+#mcq1-options .list-group-item.incorrect,
+#mcq2-options .list-group-item.incorrect {
+    border-color: #dc3545;
+    background-color: #f8d7da;
+}
+
+.practice-item {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.practice-word {
+    font-weight: bold;
+    color: #0d6efd;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.dictation-item {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.dictation-feedback {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.dictation-feedback.correct {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.dictation-feedback.incorrect {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.btn-lg {
+    padding: 12px 24px;
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Loading spinner animation */
+.spinner-border {
+    animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .transcript-box {
+        font-size: 1rem;
+        max-height: 300px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+}

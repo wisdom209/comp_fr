@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French News Listening Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container py-4">
+        <header class="mb-4 text-center">
+            <h1 class="display-5 fw-bold text-primary">🇫🇷 French News Listening Practice</h1>
+            <p class="lead text-muted">Improve your French comprehension with today's news</p>
+        </header>
+
+        <!-- Step 1: Selection Screen -->
+        <div id="step-selection" class="step-section">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-4">Choose Your Level and Topic</h2>
+                    
+                    <div class="mb-4">
+                        <label for="level-select" class="form-label fw-bold">CEFR Level:</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="level" id="level-a1" value="A1">
+                                <label class="form-check-label" for="level-a1">A1 (Beginner)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="level" id="level-a2" value="A2">
+                                <label class="form-check-label" for="level-a2">A2 (Elementary)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="level" id="level-b1" value="B1">
+                                <label class="form-check-label" for="level-b1">B1 (Intermediate)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="level" id="level-b2" value="B2" checked>
+                                <label class="form-check-label" for="level-b2">B2 (Upper Intermediate)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="category-select" class="form-label fw-bold">Category:</label>
+                        <select class="form-select" id="category-select">
+                            <option value="World">World News</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Health">Health</option>
+                            <option value="Business">Business</option>
+                            <option value="Science">Science</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-get-news" class="btn btn-primary btn-lg w-100">
+                        📰 Get News
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Loading Screen -->
+        <div id="step-loading" class="step-section d-none">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h3 class="mt-4">Preparing Your Lesson...</h3>
+                <p class="text-muted">Fetching news and generating audio materials</p>
+                <p class="text-muted small">This may take 30-60 seconds</p>
+            </div>
+        </div>
+
+        <!-- Step 3: Listening Screen -->
+        <div id="step-listening" class="step-section d-none">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3" id="listening-title">News Article</h2>
+                    <p class="text-muted mb-4">Listen carefully to the audio. You will answer a question afterward.</p>
+                    
+                    <div class="audio-container text-center my-4">
+                        <audio id="audio-player" controls class="w-100">
+                            <source src="" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+
+                    <div id="listening-controls" class="text-center mt-4">
+                        <button id="btn-play-audio" class="btn btn-success btn-lg me-2">
+                            ▶️ Play Audio
+                        </button>
+                    </div>
+
+                    <div id="listening-complete-msg" class="alert alert-info mt-4 d-none">
+                        ✅ Audio finished! Scroll down to answer the question.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: First MCQ Screen -->
+        <div id="step-mcq1" class="step-section d-none">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Question 1 of 2</h2>
+                    <p class="lead mb-4" id="mcq1-question">Loading question...</p>
+                    
+                    <div id="mcq1-options" class="list-group mb-4">
+                        <!-- Options will be inserted here -->
+                    </div>
+
+                    <div id="mcq1-feedback" class="alert d-none"></div>
+
+                    <button id="btn-mcq1-next" class="btn btn-primary d-none" disabled>
+                        Next →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Transcript Listening Screen -->
+        <div id="step-transcript" class="step-section d-none">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Listen with Transcript</h2>
+                    <p class="text-muted mb-4">Follow along with the text. Click any word to jump to that point in the audio.</p>
+                    
+                    <audio id="transcript-audio" controls class="w-100 mb-4">
+                        <source src="" type="audio/mpeg">
+                    </audio>
+
+                    <div id="transcript-text" class="transcript-box p-3 border rounded bg-light">
+                        <!-- Transcript will be inserted here -->
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button id="btn-transcript-next" class="btn btn-primary btn-lg d-none">
+                            Next →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 6: Second MCQ Screen -->
+        <div id="step-mcq2" class="step-section d-none">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Question 2 of 2</h2>
+                    <p class="lead mb-4" id="mcq2-question">Loading question...</p>
+                    
+                    <div id="mcq2-options" class="list-group mb-4">
+                        <!-- Options will be inserted here -->
+                    </div>
+
+                    <div id="mcq2-feedback" class="alert d-none"></div>
+
+                    <button id="btn-mcq2-next" class="btn btn-primary d-none" disabled>
+                        Continue to Practice →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 7: Practice Section -->
+        <div id="step-practice" class="step-section d-none">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Vocabulary Practice</h2>
+                    <p class="text-muted mb-4">Write your own sentences using these words or phrases from the article.</p>
+                    
+                    <div id="practice-items" class="mb-4">
+                        <!-- Practice items will be inserted here -->
+                    </div>
+
+                    <button id="btn-practice-next" class="btn btn-primary btn-lg">
+                        Continue to Dictation →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 8: Dictation Section -->
+        <div id="step-dictation" class="step-section d-none">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-3">Dictation Practice</h2>
+                    <p class="text-muted mb-4">Listen to each sentence and type what you hear.</p>
+                    
+                    <div id="dictation-items" class="mb-4">
+                        <!-- Dictation items will be inserted here -->
+                    </div>
+
+                    <button id="btn-dictation-finish" class="btn btn-success btn-lg">
+                        🎉 Finish & Start New Lesson
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion Screen -->
+        <div id="step-complete" class="step-section d-none">
+            <div class="card shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <h2 class="display-4 mb-3">🎉 Excellent!</h2>
+                    <p class="lead mb-4">You've completed this listening practice session.</p>
+                    <p class="text-muted mb-4">Ready for another lesson?</p>
+                    <button id="btn-restart" class="btn btn-primary btn-lg">
+                        Start New Lesson
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
