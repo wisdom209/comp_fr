@@ -35,7 +35,6 @@ coverage.xml
 .idea/
 *.swp
 *.swo
-*.tmp
 
 # OS
 .DS_Store
