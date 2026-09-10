@@ -2,6 +2,14 @@
 
 body {
     background-color: #f8f9fa;
+    min-height: 100vh;
+    font-size: 16px; /* Base size for mobile readability */
+}
+
+.container {
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 100%;
 }
 
 .step-section {
@@ -12,10 +20,19 @@ body {
 .card {
     border: none;
     border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 1.5rem;
 }
 
 .card-title {
     color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
 }
 
 .transcript-box {
@@ -23,6 +40,8 @@ body {
     overflow-y: auto;
     line-height: 1.8;
     font-size: 1.1rem;
+    word-wrap: break-word;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 .transcript-word {
@@ -31,6 +50,8 @@ body {
     border-radius: 4px;
     transition: all 0.2s ease;
     display: inline-block;
+    margin: 1px 0;
+    white-space: nowrap;
 }
 
 .transcript-word:hover {
@@ -41,6 +62,7 @@ body {
     background-color: #ffc107;
     color: #000;
     font-weight: bold;
+    transform: scale(1.05);
 }
 
 .transcript-word.played {
@@ -48,7 +70,9 @@ body {
 }
 
 .audio-container audio {
+    width: 100%;
     max-width: 100%;
+    min-height: 40px;
 }
 
 #mcq1-options .list-group-item,
@@ -57,7 +81,10 @@ body {
     transition: all 0.2s ease;
     border: 2px solid #dee2e6;
     border-radius: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    padding: 12px 16px;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 #mcq1-options .list-group-item:hover,
@@ -97,6 +124,7 @@ body {
     color: #0d6efd;
     font-size: 1.2rem;
     margin-bottom: 8px;
+    word-wrap: break-word;
 }
 
 .dictation-item {
@@ -111,6 +139,7 @@ body {
     margin-top: 8px;
     padding: 8px 12px;
     border-radius: 4px;
+    word-wrap: break-word;
 }
 
 .dictation-feedback.correct {
@@ -125,6 +154,8 @@ body {
 
 .btn-lg {
     padding: 12px 24px;
+    font-size: 1rem;
+    touch-action: manipulation; /* Improves touch response */
 }
 
 .form-check-input:checked {
@@ -143,19 +174,314 @@ body {
     }
 }
 
-/* Responsive adjustments */
-@media (max-width: 576px) {
+/* Level selection - make radio buttons more touch-friendly */
+.form-check {
+    min-width: 120px;
+}
+
+.form-check-label {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    user-select: none; /* Prevent text selection on tap */
+}
+
+.form-check-label:hover {
+    background-color: #e9ecef;
+}
+
+/* Ensure form inputs don't zoom on iOS */
+input[type="text"],
+textarea,
+select {
+    font-size: 16px !important;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
     .container {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
     
+    header {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    h1.display-5 {
+        font-size: 1.5rem !important;
+        line-height: 1.3;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    p.lead {
+        font-size: 0.95rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .card-title {
+        font-size: 1.25rem;
+    }
+    
+    /* Stack radio buttons vertically on mobile */
+    .d-flex.gap-3 {
+        flex-direction: column;
+        gap: 0.5rem !important;
+    }
+    
+    .form-check {
+        width: 100%;
+        min-width: auto;
+        padding: 10px 12px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-check-input {
+        margin-top: 2px;
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .form-check-label {
+        padding: 4px 8px;
+        width: calc(100% - 30px);
+        margin-left: 8px;
+    }
+    
+    /* Adjust transcript for mobile */
     .transcript-box {
         font-size: 1rem;
         max-height: 300px;
+        padding: 12px !important;
     }
     
-    h1 {
-        font-size: 1.5rem;
+    .transcript-word {
+        padding: 1px 3px;
+        font-size: 0.95rem;
+    }
+    
+    /* Make buttons full width on mobile */
+    .btn-lg.w-100,
+    #btn-get-news,
+    #btn-play-audio,
+    #btn-mcq1-next,
+    #btn-transcript-next,
+    #btn-mcq2-next,
+    #btn-practice-next,
+    #btn-dictation-finish,
+    #btn-restart {
+        width: 100%;
+        margin-bottom: 8px;
+        min-height: 48px; /* Touch-friendly button size */
+    }
+    
+    #listening-controls .btn-lg {
+        width: 100%;
+        margin: 8px 0;
+        min-height: 48px;
+    }
+    
+    .me-2 {
+        margin-right: 0 !important;
+        margin-bottom: 8px;
+    }
+    
+    /* Adjust MCQ options for mobile */
+    #mcq1-options .list-group-item,
+    #mcq2-options .list-group-item {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+        min-height: 50px; /* Touch-friendly */
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Practice and dictation items */
+    .practice-item,
+    .dictation-item {
+        padding: 12px;
+    }
+    
+    .practice-word {
+        font-size: 1.1rem;
+    }
+    
+    /* Audio player adjustments */
+    .audio-container {
+        margin: 1rem 0;
+    }
+    
+    audio {
+        height: 40px;
+    }
+    
+    /* Spinner size */
+    .spinner-border[style*="3rem"] {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+    
+    h3.mt-4 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem !important;
+    }
+    
+    .text-muted.small {
+        font-size: 0.8rem;
+    }
+    
+    /* Alert messages */
+    .alert {
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+    
+    /* Form inputs */
+    .form-select,
+    .form-control {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px 12px;
+    }
+    
+    .mb-4 {
+        margin-bottom: 1rem !important;
+    }
+    
+    .p-4 {
+        padding: 1rem !important;
+    }
+    
+    /* Dictation audio controls */
+    .dictation-item audio {
+        height: 36px;
+        margin-top: 8px;
+    }
+    
+    /* Textarea in practice section */
+    textarea.form-control {
+        min-height: 60px;
+        font-size: 16px;
+    }
+    
+    /* Sample answer button */
+    .btn-sm {
+        min-height: 40px;
+        padding: 6px 12px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 375px) {
+    h1.display-5 {
+        font-size: 1.3rem !important;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .transcript-box {
+        font-size: 0.9rem;
+        max-height: 250px;
+    }
+    
+    .btn-lg {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+    }
+    
+    .form-check-label {
+        font-size: 0.9rem;
+    }
+    
+    #mcq1-options .list-group-item,
+    #mcq2-options .list-group-item {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tablet optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    
+    .transcript-box {
+        max-height: 350px;
+    }
+}
+
+/* Touch-friendly improvements for all mobile devices */
+@media (hover: none) and (pointer: coarse) {
+    .list-group-item {
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .btn {
+        min-height: 44px;
+        padding: 10px 16px;
+    }
+    
+    .form-check {
+        min-height: 44px;
+        padding: 8px 12px;
+    }
+    
+    /* Make transcript words easier to tap */
+    .transcript-word {
+        padding: 3px 5px;
+    }
+    
+    /* Increase touch targets for practice/dictation */
+    .practice-item,
+    .dictation-item {
+        padding: 14px;
+    }
+}
+
+/* Landscape mode on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .transcript-box {
+        max-height: 200px;
+    }
+    
+    header {
+        margin-bottom: 1rem !important;
+    }
+    
+    h1.display-5 {
+        font-size: 1.3rem !important;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .step-section:not(.d-none) {
+        page-break-inside: avoid;
+    }
+    
+    audio {
+        display: none;
+    }
+    
+    .btn, .audio-container {
+        display: none;
     }
 }
